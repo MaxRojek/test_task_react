@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { PageWrapper, PageTitle, SearchInput, UsersListWrapper, ListWrapper } from "./MainPage.style";
 import UserCard from "../components/UserCard/UserCard";
+import filterUsersList from "../components/FilterUsers/FilterUsersList";
 
 function MainPage() {
   const [users, setUsers] = useState([]);
@@ -20,22 +21,6 @@ function MainPage() {
       });
   }, []);
 
-  const displayUsersList = (userName, usersList) => {
-    return userName.length > 0
-      ? usersList
-          .filter((user) => user.name.includes(userName))
-          .map((user) => {
-            return (
-              <UserCard id={user.id} key={user.id} userId={user.id} userName={user.name} userNickname={user.username} />
-            );
-          })
-      : usersList.map((user) => {
-          return (
-            <UserCard id={user.id} key={user.id} userId={user.id} userName={user.name} userNickname={user.username} />
-          );
-        });
-  };
-
   return (
     <>
       <PageWrapper>
@@ -50,7 +35,19 @@ function MainPage() {
           />
         </PageTitle>
         <UsersListWrapper>
-          <ListWrapper>{users.length > 0 ? displayUsersList(searchUser, users) : <>users not found</>}</ListWrapper>
+          <ListWrapper>
+            {filterUsersList(searchUser, users).map((user) => {
+              return (
+                <UserCard
+                  id={user.id}
+                  key={user.id}
+                  userId={user.id}
+                  userName={user.name}
+                  userNickname={user.username}
+                />
+              );
+            })}
+          </ListWrapper>
         </UsersListWrapper>
       </PageWrapper>
     </>

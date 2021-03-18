@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { UserCardWrapper, UserCardInfo, UserCardName } from "./UserCard.style";
 
 function UserCard(props) {
