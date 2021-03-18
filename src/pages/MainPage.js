@@ -9,16 +9,22 @@ function MainPage() {
   const [errorMessage, setErrorMessage] = useState(false);
 
   useEffect(() => {
-    fetch(process.env.REACT_APP_API_URL)
-      .then((response) => response.json())
-      .then((json) => {
-        setUsers(json);
-        console.log(json);
-      })
-      .catch((error) => {
-        console.log("error" + error);
-        setErrorMessage(true);
-      });
+    // fetch(process.env.REACT_APP_API_URL)
+    //   .then((response) => response.json())
+    //   .then((json) => {
+    //     setUsers(json);
+    //     console.log(json);
+    //   })
+    //   .catch((error) => {
+    //     console.log("error" + error);
+    //     setErrorMessage(true);
+    //   });
+
+    const fetchUsers = async () => {
+      const data = await fetch(process.env.REACT_APP_API_URL).then((res) => res.json());
+      setUsers(data);
+    };
+    fetchUsers();
   }, []);
 
   return (

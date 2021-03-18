@@ -1,7 +1,22 @@
 import React from "react";
-import { shallow, mount, render } from "enzyme";
+import { shallow } from "enzyme";
+import { render, screen, act } from "@testing-library/react";
 import MainPage from "./MainPage";
 import { SearchInput } from "./MainPage.style";
+
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () =>
+      Promise.resolve([
+        {
+          id: 1,
+          name: "Leanne Graham",
+          surname: "Graham",
+        },
+        { id: 2, name: "Mario", surname: "Graham" },
+      ]),
+  })
+);
 
 it("renders correctly", () => {
   shallow(<MainPage />);
@@ -12,19 +27,10 @@ it("include search input", () => {
   expect(mainPage.containsMatchingElement(<SearchInput />)).toEqual(true);
 });
 
-// it("filters names when typed in search input", () => {
-//   const mainPage = mount(<MainPage />);
-//   //   const input = mainPage.find(<SearchInput />);
-//   //input.simulate('change', { target: { value: 'Markus' } });
-//   //input.find(<SearchInput />).value("Markus");
-//   // expect(mainPage.at(0).key().toLocaleLowerCase.equal("1"));
-//   //   mainPage.find(SearchInput).simulate("change", {
-//   //     target: { value: "Ervin" },
-//   //   });
-//   //   expect(mainPage.find(SearchInput).props().value).toEqual("Ervin");
-//   // expect(mainPage.containsMatchingElement(<UserCard key="2" />)).toEqual(true);
-//   //mainPage.find("#2").toEqual(true);
-//   //expect(mainPage.find("#Ervin Howell").html()).toContain("2. Ervin Howell @Antonette");
-//   expect(mainPage.find("#2").exists()).toBeTruthy();
-//   // expect(mainPage.state("users")).toBe([]);
-// });
+describe("MainPage", () => {
+  it("fetch users", async () => {
+    await act(async () => render(<MainPage />));
+    // expect(container.innerHTML).toMatch("Leanne Graham");
+    expect(screen.getByText("1")).toBeInTheDocument();
+  });
+});
